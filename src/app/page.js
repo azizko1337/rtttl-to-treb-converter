@@ -1,95 +1,85 @@
+"use client";
+import { Theme, Grid, Box, Flex, Heading, TextArea } from "@radix-ui/themes";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import styles from "./page.module.css";
+import rtttlToTreb from "@/utils/rtttlToTreb";
+import "@radix-ui/themes/styles.css";
+import { AwesomeButton } from "react-awesome-button";
+import "react-awesome-button/dist/styles.css";
 
 export default function Home() {
+  const [rtttl, setRtttl] = useState(
+    "Super Mario - Main Theme:d=4,o=5,b=125:a,8f.,16c,16d,16f,16p,f,16d,16c,16p,16f,16p,16f,16p,8c6,8a.,g,16c,a,8f.,16c,16d,16f,16p,f,16d,16c,16p,16f,16p,16a#,16a,16g,2f,16p,8a.,8f.,8c,8a.,f,16g#,16f,16c,16p,8g#.,2g,8a.,8f.,8c,8a.,f,16g#,16f,8c,2c6"
+  );
+  const [treb, setTreb] = useState("");
+
+  const handleChange = (event) => {
+    const rtttl = event.target.value;
+    setRtttl(rtttl);
+  };
+
+  useEffect(() => {
+    try {
+      const treb = rtttlToTreb(rtttl);
+      treb.name = treb.name.replaceAll(" ", "").slice(0, 8).toUpperCase();
+      setTreb(treb);
+    } catch (e) {
+      setTreb("");
+    }
+  }, [rtttl, setTreb]);
+
+  const download = () => {
+    //download the treb.treb as file.trb
+    const element = document.createElement("a");
+    const file = new Blob([treb.treb], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = `${treb.name}.TRB`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    <main>
+      <Theme>
+        <Box width="100%" mb="3">
+          <Flex justify="center">
+            <Heading>KONWERTER</Heading>
+          </Flex>
+        </Box>
+        <Grid columns={{ initial: "1", md: "2" }} gap="3" width="100%">
+          <Flex direction="column">
+            <Flex align="center" justify="center" height="9">
+              RTTTL
+              <Image width="60" height="60" src="/cheems.png" />
+            </Flex>
+            <TextArea
+              onChange={handleChange}
+              placeholder="Tutaj daj rtttl"
+              value={rtttl}
+              rows="20"
             />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+          </Flex>
+          <Flex direction="column">
+            <Flex height="9" align="center" justify="center">
+              <AwesomeButton type="instagram" ripple={true} href="/PLAYER.EXE">
+                .treb
+              </AwesomeButton>
+              <Image width="60" height="60" src="/strongdoge.png" />
+            </Flex>
+            <TextArea
+              disabled
+              placeholder="Tutaj dostaniesz .treb jak wszystko pujdzie git"
+              value={treb.treb}
+              rows="20"
+            />
+            <Flex height="9" align="center" justify="center">
+              <AwesomeButton type="instagram" ripple={true} onPress={download}>
+                Pobierz jako {treb.name}.TRB
+              </AwesomeButton>
+            </Flex>
+          </Flex>
+        </Grid>
+      </Theme>
     </main>
   );
 }

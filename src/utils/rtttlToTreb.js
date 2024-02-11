@@ -82,9 +82,9 @@ function rtttlToTreb(rttl) {
 
     if (note[0] == ".") {
       if (half) {
-        treb += `${noteTreb}IS,${octave},${duration - 1}\n`;
+        treb += `${noteTreb}IS,${octave},${duration + 1}\n`;
       } else {
-        treb += `${noteTreb},${octave},${duration - 1}\n`;
+        treb += `${noteTreb},${octave},${duration + 1}\n`;
       }
     }
   });
