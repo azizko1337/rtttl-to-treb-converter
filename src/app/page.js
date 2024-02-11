@@ -24,7 +24,7 @@ export default function Home() {
       treb.name = treb.name.replaceAll(" ", "").slice(0, 8).toUpperCase();
       setTreb(treb);
     } catch (e) {
-      setTreb("");
+      setTreb({ treb: "", name: "" });
     }
   }, [rtttl, setTreb]);
 
